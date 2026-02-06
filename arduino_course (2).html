@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino Fundamentals - Online Course</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #00BFA5 0%, #00897B 100%);
+            color: white;
+            padding: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .course-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .info-card {
+            text-align: center;
+        }
+        
+        .info-card .number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00897B;
+        }
+        
+        .info-card .label {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .module {
+            margin-bottom: 30px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .module:hover {
+            border-color: #00BFA5;
+            box-shadow: 0 4px 12px rgba(0,191,165,0.2);
+        }
+        
+        .module-header {
+            background: linear-gradient(135deg, #00BFA5 0%, #00897B 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .module-header h3 {
+            font-size: 1.3em;
+        }
+        
+        .toggle {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+        
+        .module.active .toggle {
+            transform: rotate(180deg);
+        }
+        
+        .module-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .module.active .module-content {
+            max-height: 2000px;
+        }
+        
+        .module-body {
+            padding: 25px;
+            background: white;
+        }
+        
+        .lesson {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #00BFA5;
+        }
+        
+        .lesson h4 {
+            color: #00897B;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .lesson ul {
+            margin-left: 20px;
+            color: #555;
+        }
+        
+        .lesson li {
+            margin: 5px 0;
+        }
+        
+        .challenge-box {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            border: 2px solid #FFB74D;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        
+        .challenge-box h5 {
+            color: #F57C00;
+            margin-bottom: 10px;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .challenge-box h5::before {
+            content: "🎯 ";
+            margin-right: 8px;
+        }
+        
+        .project-box {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border: 2px solid #66BB6A;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        
+        .project-box h5 {
+            color: #2E7D32;
+            margin-bottom: 10px;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .project-box h5::before {
+            content: "🚀 ";
+            margin-right: 8px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-right: 8px;
+            margin-top: 8px;
+        }
+        
+        .footer {
+            background: #263238;
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .prerequisites {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        .prerequisites h3 {
+            color: #1565C0;
+            margin-bottom: 10px;
+        }
+        
+        .quiz-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .quiz-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .quiz-container {
+            background: white;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .quiz-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .quiz-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        
+        #quiz-content {
+            padding: 30px;
+        }
+        
+        .quiz-progress {
+            background: #E3F2FD;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            color: #1565C0;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-question h3 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.3em;
+            line-height: 1.5;
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .quiz-option {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover:not(:disabled) {
+            background: #E3F2FD;
+            border-color: #2196F3;
+            transform: translateX(5px);
+        }
+        
+        .quiz-option:disabled {
+            cursor: not-allowed;
+        }
+        
+        .quiz-results {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .quiz-results h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .score-display {
+            margin: 30px 0;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            font-weight: bold;
+            margin: 0 auto;
+            color: white;
+        }
+        
+        .score-circle.pass {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+        
+        .score-circle.fail {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+        
+        .certificate-container {
+            background: white;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .certificate {
+            background: white;
+            padding: 40px;
+        }
+        
+        .certificate-border {
+            border: 8px solid;
+            border-image: linear-gradient(135deg, #00BFA5, #667eea, #764ba2) 1;
+            padding: 40px;
+            position: relative;
+        }
+        
+        .certificate-border::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px solid #e0e0e0;
+            pointer-events: none;
+        }
+        
+        .certificate-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .final-quiz-section {
+            margin-top: 40px;
+            padding: 40px;
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            border-radius: 16px;
+            text-align: center;
+            border: 3px solid #FFB74D;
+        }
+        
+        .final-quiz-section h2 {
+            color: #F57C00;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .final-quiz-section p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔌 Arduino Fundamentals</h1>
+            <p>Master Physical Computing from Scratch to Advanced Projects</p>
+        </div>
+        
+        <div class="course-info">
+            <div class="info-card">
+                <div class="number">8 Weeks</div>
+                <div class="label">Course Duration</div>
+            </div>
+            <div class="info-card">
+                <div class="number">6 Modules</div>
+                <div class="label">Learning Modules</div>
+            </div>
+            <div class="info-card">
+                <div class="number">15+ Projects</div>
+                <div class="label">Hands-on Challenges</div>
+            </div>
+            <div class="info-card">
+                <div class="number">Beginner</div>
+                <div class="label">Difficulty Level</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="prerequisites">
+                <h3>📋 Prerequisites</h3>
+                <p><strong>Required:</strong> Basic computer skills, curiosity about electronics</p>
+                <p><strong>Helpful but not required:</strong> Basic programming concepts, simple circuit understanding</p>
+                <p><strong>Materials needed:</strong> Arduino Uno starter kit (LED, resistors, breadboard, sensors, etc.)</p>
+            </div>
+            
+            <!-- Module 1 -->
+            <div class="module active">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <h3>Module 1: Introduction to Arduino & Basic Electronics</h3>
+                    <span class="toggle">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-body">
+                        <div class="lesson">
+                            <h4>Week 1: Getting Started</h4>
+                            <ul>
+                                <li>What is Arduino? Understanding microcontrollers</li>
+                                <li>Arduino board anatomy (Uno, Nano, Mega)</li>
+                                <li>Setting up Arduino IDE</li>
+                                <li>Basic electronics: voltage, current, resistance</li>
+                                <li>Reading circuit diagrams</li>
+                            </ul>
+                            <div class="challenge-box">
+                                <h5>Challenge 1.1: First Blink</h5>
+                                <p>Write code to make the onboard LED blink at different speeds. Modify the delay to create a custom pattern (3 fast blinks, 1 slow blink, repeat).</p>
+                                <p><strong>Learning goal:</strong> Understand digitalWrite() and delay() functions</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 1.2: Build Your First Circuit</h5>
+                                <p>Connect an external LED with a resistor on a breadboard. Calculate the correct resistor value for your LED. Make it blink in Morse code to spell "SOS".</p>
+                                <p><strong>Learning goal:</strong> Apply Ohm's Law, understand breadboard connections</p>
+                            </div>
+                        </div>
+                        
+                        <div class="project-box">
+                            <h5>Module 1 Project: Traffic Light Simulator</h5>
+                            <p>Build a 3-LED traffic light system that cycles through red, yellow, and green with realistic timing. Add a pedestrian crossing button that interrupts the cycle.</p>
+                            <p><strong>Skills practiced:</strong> Multiple outputs, timing control, basic input handling</p>
+                        </div>
+                        
+                        <button class="quiz-btn" data-module="1" onclick="showQuiz(1)">📝 Take Module 1 Quiz</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Module 2 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <h3>Module 2: Digital & Analog I/O</h3>
+                    <span class="toggle">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-body">
+                        <div class="lesson">
+                            <h4>Week 2: Working with Inputs and Outputs</h4>
+                            <ul>
+                                <li>Digital vs. Analog signals</li>
+                                <li>Using buttons and switches (digitalRead)</li>
+                                <li>Pull-up and pull-down resistors</li>
+                                <li>Reading analog sensors (analogRead)</li>
+                                <li>PWM (Pulse Width Modulation) for analog output</li>
+                                <li>Serial communication basics</li>
+                            </ul>
+                            <div class="challenge-box">
+                                <h5>Challenge 2.1: Button-Controlled LED</h5>
+                                <p>Create a system where pressing a button toggles an LED on/off (not just while pressed). Add debouncing to prevent false triggers.</p>
+                                <p><strong>Learning goal:</strong> State management, debouncing techniques</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 2.2: Potentiometer Dimmer</h5>
+                                <p>Use a potentiometer to control LED brightness smoothly. Display the brightness level (0-100%) on Serial Monitor.</p>
+                                <p><strong>Learning goal:</strong> Analog input, PWM output, map() function</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 2.3: Light-Reactive Nightlight</h5>
+                                <p>Use a photoresistor (LDR) to automatically turn on an LED when it gets dark. Make the LED brightness inversely proportional to ambient light.</p>
+                                <p><strong>Learning goal:</strong> Sensor integration, conditional logic</p>
+                            </div>
+                        </div>
+                        
+                        <div class="project-box">
+                            <h5>Module 2 Project: Digital Piano</h5>
+                            <p>Build a 4-key piano using buttons that play different tones through a buzzer. Add a potentiometer to control the octave. Display the note being played on Serial Monitor.</p>
+                            <p><strong>Skills practiced:</strong> Multiple inputs, tone generation, PWM, serial output</p>
+                        </div>
+                        
+                        <button class="quiz-btn" data-module="2" onclick="showQuiz(2)">📝 Take Module 2 Quiz</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Module 3 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <h3>Module 3: Sensors & Data Processing</h3>
+                    <span class="toggle">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-body">
+                        <div class="lesson">
+                            <h4>Week 3-4: Working with Sensors</h4>
+                            <ul>
+                                <li>Temperature sensors (LM35, DHT11)</li>
+                                <li>Distance measurement (Ultrasonic sensor)</li>
+                                <li>Motion detection (PIR sensor)</li>
+                                <li>Data smoothing and filtering</li>
+                                <li>Calibration techniques</li>
+                                <li>Arrays and data storage</li>
+                            </ul>
+                            <div class="challenge-box">
+                                <h5>Challenge 3.1: Temperature Monitor</h5>
+                                <p>Read temperature from a sensor and display it on Serial Monitor. Trigger different LEDs for cold (<20°C), comfortable (20-25°C), and hot (>25°C) ranges.</p>
+                                <p><strong>Learning goal:</strong> Sensor reading, conditional logic, thresholds</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 3.2: Parking Sensor</h5>
+                                <p>Use an ultrasonic sensor to create a parking assistant. Beep faster as objects get closer. Add LED indicators for distance ranges.</p>
+                                <p><strong>Learning goal:</strong> Distance calculation, variable timing, multi-output control</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 3.3: Data Logger</h5>
+                                <p>Record temperature readings every second for 1 minute. Calculate and display the average, minimum, and maximum values.</p>
+                                <p><strong>Learning goal:</strong> Arrays, loops, mathematical operations</p>
+                            </div>
+                        </div>
+                        
+                        <div class="project-box">
+                            <h5>Module 3 Project: Smart Room Monitor</h5>
+                            <p>Combine temperature, light, and motion sensors to create an intelligent room monitoring system. Display status on Serial Monitor. Turn on lights when motion is detected and it's dark, and trigger an alert when temperature exceeds limits.</p>
+                            <p><strong>Skills practiced:</strong> Multiple sensor integration, complex logic, system design</p>
+                        </div>
+                        
+                        <button class="quiz-btn" data-module="3" onclick="showQuiz(3)">📝 Take Module 3 Quiz</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Module 4 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <h3>Module 4: Displays & Visual Feedback</h3>
+                    <span class="toggle">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-body">
+                        <div class="lesson">
+                            <h4>Week 5: Output Devices</h4>
+                            <ul>
+                                <li>LCD displays (16x2)</li>
+                                <li>7-segment displays</li>
+                                <li>LED matrices</li>
+                                <li>RGB LEDs</li>
+                                <li>Using libraries effectively</li>
+                                <li>Creating custom characters</li>
+                            </ul>
+                            <div class="challenge-box">
+                                <h5>Challenge 4.1: LCD Thermometer</h5>
+                                <p>Display temperature readings on an LCD screen with proper formatting. Add a custom degree symbol. Update the display every 2 seconds.</p>
+                                <p><strong>Learning goal:</strong> LCD library usage, formatting, custom characters</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 4.2: Countdown Timer</h5>
+                                <p>Create a countdown timer displayed on a 7-segment display. Use buttons to set minutes and seconds, and another button to start/stop.</p>
+                                <p><strong>Learning goal:</strong> Display multiplexing, time management, user interface</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 4.3: Mood Lamp</h5>
+                                <p>Use an RGB LED to create a color-changing mood lamp. Implement smooth color transitions. Add buttons or a potentiometer to control speed and color selection.</p>
+                                <p><strong>Learning goal:</strong> RGB mixing, color theory, smooth transitions</p>
+                            </div>
+                        </div>
+                        
+                        <div class="project-box">
+                            <h5>Module 4 Project: Digital Clock with Alarm</h5>
+                            <p>Build a digital clock using an LCD display. Include settable alarm functionality with buttons. Use a buzzer for the alarm sound. Display temperature as a bonus feature.</p>
+                            <p><strong>Skills practiced:</strong> Time keeping, user interface design, display management, integrated systems</p>
+                        </div>
+                        
+                        <button class="quiz-btn" data-module="4" onclick="showQuiz(4)">📝 Take Module 4 Quiz</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Module 5 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <h3>Module 5: Motors & Motion Control</h3>
+                    <span class="toggle">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-body">
+                        <div class="lesson">
+                            <h4>Week 6: Actuators and Movement</h4>
+                            <ul>
+                                <li>DC motors and H-bridge control</li>
+                                <li>Servo motors (position control)</li>
+                                <li>Stepper motors (precise movement)</li>
+                                <li>Motor drivers (L298N, L293D)</li>
+                                <li>Power management for motors</li>
+                                <li>Speed control with PWM</li>
+                            </ul>
+                            <div class="challenge-box">
+                                <h5>Challenge 5.1: Servo Sweep</h5>
+                                <p>Control a servo motor to sweep back and forth. Add a potentiometer to manually set the servo position. Display the angle on Serial Monitor.</p>
+                                <p><strong>Learning goal:</strong> Servo library, angle control, input-to-output mapping</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 5.2: DC Motor Speed Control</h5>
+                                <p>Control DC motor speed and direction using buttons or a potentiometer. Implement acceleration/deceleration rather than instant speed changes.</p>
+                                <p><strong>Learning goal:</strong> Motor driver usage, PWM for speed, direction control</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 5.3: Stepper Motor Precision</h5>
+                                <p>Move a stepper motor exactly 360 degrees, pause, then return to start position. Implement speed control. Count and display total steps taken.</p>
+                                <p><strong>Learning goal:</strong> Stepper motor control, precision movement, step counting</p>
+                            </div>
+                        </div>
+                        
+                        <div class="project-box">
+                            <h5>Module 5 Project: Robotic Arm or Line-Following Robot</h5>
+                            <p><strong>Option A:</strong> Build a 2-axis robotic arm controlled by potentiometers. Include a servo-controlled gripper.<br>
+                            <strong>Option B:</strong> Create a simple line-following robot using IR sensors and DC motors.</p>
+                            <p><strong>Skills practiced:</strong> Motor integration, sensor-motor coordination, mechanical design</p>
+                        </div>
+                        
+                        <button class="quiz-btn" data-module="5" onclick="showQuiz(5)">📝 Take Module 5 Quiz</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Module 6 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <h3>Module 6: Communication & Advanced Projects</h3>
+                    <span class="toggle">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-body">
+                        <div class="lesson">
+                            <h4>Week 7-8: Connectivity and Integration</h4>
+                            <ul>
+                                <li>Serial communication protocols</li>
+                                <li>I2C and SPI communication</li>
+                                <li>Bluetooth modules (HC-05)</li>
+                                <li>WiFi with ESP8266/ESP32</li>
+                                <li>SD card data logging</li>
+                                <li>Multi-Arduino communication</li>
+                                <li>Power optimization techniques</li>
+                            </ul>
+                            <div class="challenge-box">
+                                <h5>Challenge 6.1: Bluetooth Remote Control</h5>
+                                <p>Control LEDs and read sensor values from your smartphone using Bluetooth. Create a simple Android app or use existing serial apps.</p>
+                                <p><strong>Learning goal:</strong> Wireless communication, command parsing, mobile integration</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 6.2: Temperature Data Logger</h5>
+                                <p>Log temperature readings to an SD card with timestamps. Retrieve and display the data when requested via Serial Monitor.</p>
+                                <p><strong>Learning goal:</strong> SD card operations, data formatting, file handling</p>
+                            </div>
+                            <div class="challenge-box">
+                                <h5>Challenge 6.3: I2C Sensor Network</h5>
+                                <p>Connect multiple I2C sensors (temperature, pressure, light) and display all readings on an LCD screen. Cycle through different sensor displays.</p>
+                                <p><strong>Learning goal:</strong> I2C protocol, multiple device addressing, display management</p>
+                            </div>
+                        </div>
+                        
+                        <div class="project-box">
+                            <h5>Module 6 Final Project: Smart Home Dashboard</h5>
+                            <p>Integrate everything you've learned! Create a comprehensive smart home system with:<br>
+                            • Temperature, light, and motion monitoring<br>
+                            • Automated lighting based on conditions<br>
+                            • LCD display showing system status<br>
+                            • Bluetooth/WiFi control from smartphone<br>
+                            • Data logging to SD card<br>
+                            • Servo-controlled curtains or door lock<br>
+                            • Alarm system with multiple zones</p>
+                            <p><strong>Skills practiced:</strong> System integration, project planning, debugging complex systems, user experience design</p>
+                        </div>
+                        
+                        <div class="lesson" style="margin-top: 30px; background: #E1F5FE; border-left-color: #0277BD;">
+                            <h4>🎓 Course Completion Bonus Challenges</h4>
+                            <ul>
+                                <li><strong>IoT Weather Station:</strong> Upload sensor data to cloud services</li>
+                                <li><strong>Voice-Controlled System:</strong> Integrate with voice recognition</li>
+                                <li><strong>Solar Tracker:</strong> Build a system that follows the sun</li>
+                                <li><strong>Gesture Control:</strong> Use accelerometer for gesture-based control</li>
+                                <li><strong>Arduino-Based Game:</strong> Create Pong or Snake on LED matrix</li>
+                            </ul>
+                        </div>
+                        
+                        <button class="quiz-btn" data-module="6" onclick="showQuiz(6)">📝 Take Module 6 Quiz</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="final-quiz-section">
+                <h2>🎓 Final Comprehensive Exam</h2>
+                <p>Complete all 6 module quizzes, then take the final exam to test your overall understanding of Arduino fundamentals. Pass with 75% or higher to earn your certificate!</p>
+                <p style="font-size: 0.95em; color: #F57C00; font-weight: bold;">The final exam covers all topics from the entire course.</p>
+                <button id="final-quiz-btn" class="quiz-btn" onclick="showFinalQuiz()" style="background: linear-gradient(135deg, #F57C00 0%, #E65100 100%); font-size: 1.1em; padding: 15px 40px;">🏆 Take Final Exam (20 Questions)</button>
+            </div>
+            
+            <div style="margin-top: 40px; padding: 30px; background: #F5F5F5; border-radius: 12px;">
+                <h3 style="color: #00897B; margin-bottom: 15px;">📚 Learning Resources</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                        <h4 style="color: #667eea; margin-bottom: 8px;">🔧 Tools Needed</h4>
+                        <ul style="margin-left: 20px; color: #555; line-height: 1.8;">
+                            <li>Arduino IDE</li>
+                            <li>Breadboard & jumper wires</li>
+                            <li>Multimeter</li>
+                            <li>Component kit</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                        <h4 style="color: #667eea; margin-bottom: 8px;">📖 Recommended Reading</h4>
+                        <ul style="margin-left: 20px; color: #555; line-height: 1.8;">
+                            <li>Arduino documentation</li>
+                            <li>Electronics basics tutorials</li>
+                            <li>Community forums</li>
+                            <li>Project inspiration sites</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                        <h4 style="color: #667eea; margin-bottom: 8px;">🎯 Assessment Methods</h4>
+                        <ul style="margin-left: 20px; color: #555; line-height: 1.8;">
+                            <li>Weekly challenges (40%)</li>
+                            <li>Module projects (40%)</li>
+                            <li>Final project (20%)</li>
+                            <li>Peer code reviews</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p style="font-size: 1.1em; margin-bottom: 10px;">🎉 Ready to Build Amazing Things with Arduino?</p>
+            <p style="opacity: 0.8;">Click any module above to expand and see detailed lessons and challenges</p>
+        </div>
+    </div>
+    
+    <script>
+        // Progress tracking
+        let moduleQuizScores = JSON.parse(localStorage.getItem('arduinoQuizScores') || '{}');
+        let finalQuizScore = localStorage.getItem('arduinoFinalQuizScore') || null;
+        let studentName = localStorage.getItem('arduinoStudentName') || '';
+        
+        function toggleModule(header) {
+            const module = header.parentElement;
+            const isActive = module.classList.contains('active');
+            
+            // Close all modules
+            document.querySelectorAll('.module').forEach(m => {
+                m.classList.remove('active');
+            });
+            
+            // Open clicked module if it wasn't already open
+            if (!isActive) {
+                module.classList.add('active');
+            }
+        }
+        
+        function showQuiz(moduleNumber) {
+            const quizData = getQuizData(moduleNumber);
+            let currentQuestion = 0;
+            let score = 0;
+            
+            const modal = document.createElement('div');
+            modal.className = 'quiz-modal';
+            modal.innerHTML = `
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <h2>Module ${moduleNumber} Quiz</h2>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Close</button>
+                    </div>
+                    <div id="quiz-content"></div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            displayQuestion();
+            
+            function displayQuestion() {
+                const question = quizData[currentQuestion];
+                const content = document.getElementById('quiz-content');
+                
+                content.innerHTML = `
+                    <div class="quiz-progress">Question ${currentQuestion + 1} of ${quizData.length}</div>
+                    <div class="quiz-question">
+                        <h3>${question.question}</h3>
+                        <div class="quiz-options">
+                            ${question.options.map((opt, idx) => `
+                                <button class="quiz-option" onclick="selectAnswer(${idx})">${opt}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            window.selectAnswer = function(selectedIdx) {
+                const question = quizData[currentQuestion];
+                const isCorrect = selectedIdx === question.correct;
+                
+                if (isCorrect) {
+                    score++;
+                }
+                
+                // Show feedback
+                const buttons = document.querySelectorAll('.quiz-option');
+                buttons.forEach((btn, idx) => {
+                    btn.disabled = true;
+                    if (idx === question.correct) {
+                        btn.style.background = '#4CAF50';
+                        btn.style.color = 'white';
+                    } else if (idx === selectedIdx && !isCorrect) {
+                        btn.style.background = '#f44336';
+                        btn.style.color = 'white';
+                    }
+                });
+                
+                // Next button
+                setTimeout(() => {
+                    currentQuestion++;
+                    if (currentQuestion < quizData.length) {
+                        displayQuestion();
+                    } else {
+                        showQuizResults(moduleNumber, score, quizData.length);
+                    }
+                }, 1500);
+            };
+        }
+        
+        function showQuizResults(moduleNumber, score, total) {
+            const percentage = Math.round((score / total) * 100);
+            moduleQuizScores[`module${moduleNumber}`] = percentage;
+            localStorage.setItem('arduinoQuizScores', JSON.stringify(moduleQuizScores));
+            
+            const content = document.getElementById('quiz-content');
+            content.innerHTML = `
+                <div class="quiz-results">
+                    <h2>Quiz Complete!</h2>
+                    <div class="score-display">
+                        <div class="score-circle ${percentage >= 70 ? 'pass' : 'fail'}">
+                            ${percentage}%
+                        </div>
+                    </div>
+                    <p>You scored ${score} out of ${total}</p>
+                    ${percentage >= 70 ? 
+                        '<p style="color: #4CAF50; font-weight: bold;">✅ Passed! Great job!</p>' : 
+                        '<p style="color: #f44336; font-weight: bold;">❌ You need 70% to pass. Try again!</p>'
+                    }
+                    <button onclick="location.reload()" style="background: #00BFA5; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 1.1em; margin-top: 20px;">Continue Learning</button>
+                </div>
+            `;
+            
+            updateProgress();
+        }
+        
+        function showFinalQuiz() {
+            const quizData = getFinalQuizData();
+            let currentQuestion = 0;
+            let score = 0;
+            
+            const modal = document.createElement('div');
+            modal.className = 'quiz-modal';
+            modal.innerHTML = `
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <h2>🎓 Final Comprehensive Quiz</h2>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Close</button>
+                    </div>
+                    <div id="quiz-content"></div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            displayQuestion();
+            
+            function displayQuestion() {
+                const question = quizData[currentQuestion];
+                const content = document.getElementById('quiz-content');
+                
+                content.innerHTML = `
+                    <div class="quiz-progress">Question ${currentQuestion + 1} of ${quizData.length}</div>
+                    <div class="quiz-question">
+                        <h3>${question.question}</h3>
+                        <div class="quiz-options">
+                            ${question.options.map((opt, idx) => `
+                                <button class="quiz-option" onclick="selectFinalAnswer(${idx})">${opt}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            window.selectFinalAnswer = function(selectedIdx) {
+                const question = quizData[currentQuestion];
+                const isCorrect = selectedIdx === question.correct;
+                
+                if (isCorrect) {
+                    score++;
+                }
+                
+                // Show feedback
+                const buttons = document.querySelectorAll('.quiz-option');
+                buttons.forEach((btn, idx) => {
+                    btn.disabled = true;
+                    if (idx === question.correct) {
+                        btn.style.background = '#4CAF50';
+                        btn.style.color = 'white';
+                    } else if (idx === selectedIdx && !isCorrect) {
+                        btn.style.background = '#f44336';
+                        btn.style.color = 'white';
+                    }
+                });
+                
+                // Next button
+                setTimeout(() => {
+                    currentQuestion++;
+                    if (currentQuestion < quizData.length) {
+                        displayQuestion();
+                    } else {
+                        showFinalQuizResults(score, quizData.length);
+                    }
+                }, 1500);
+            };
+        }
+        
+        function showFinalQuizResults(score, total) {
+            const percentage = Math.round((score / total) * 100);
+            finalQuizScore = percentage;
+            localStorage.setItem('arduinoFinalQuizScore', percentage);
+            
+            const content = document.getElementById('quiz-content');
+            content.innerHTML = `
+                <div class="quiz-results">
+                    <h2>Final Quiz Complete!</h2>
+                    <div class="score-display">
+                        <div class="score-circle ${percentage >= 75 ? 'pass' : 'fail'}">
+                            ${percentage}%
+                        </div>
+                    </div>
+                    <p>You scored ${score} out of ${total}</p>
+                    ${percentage >= 75 ? 
+                        '<p style="color: #4CAF50; font-weight: bold;">🎉 Congratulations! You passed the final exam!</p>' : 
+                        '<p style="color: #f44336; font-weight: bold;">You need 75% to pass the final exam. Keep learning and try again!</p>'
+                    }
+                    ${percentage >= 75 ? 
+                        '<button onclick="generateCertificate()" style="background: #667eea; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 1.1em; margin-top: 20px;">🏆 Generate Certificate</button>' :
+                        '<button onclick="location.reload()" style="background: #00BFA5; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 1.1em; margin-top: 20px;">Review Modules</button>'
+                    }
+                </div>
+            `;
+            
+            updateProgress();
+        }
+        
+        function generateCertificate() {
+            // Ask for name if not provided
+            if (!studentName) {
+                const name = prompt("Enter your name for the certificate:");
+                if (!name) return;
+                studentName = name;
+                localStorage.setItem('arduinoStudentName', name);
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'quiz-modal';
+            
+            const completionDate = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            const avgScore = Object.values(moduleQuizScores).reduce((a, b) => a + b, 0) / Object.keys(moduleQuizScores).length;
+            const overallScore = Math.round((avgScore + finalQuizScore) / 2);
+            
+            modal.innerHTML = `
+                <div class="certificate-container" id="certificate">
+                    <div class="certificate">
+                        <div class="certificate-border">
+                            <div class="certificate-content">
+                                <div class="certificate-header">
+                                    <h1 style="color: #00897B; font-size: 3em; margin: 0;">Certificate of Completion</h1>
+                                    <div style="width: 100px; height: 3px; background: linear-gradient(90deg, #00BFA5, #667eea); margin: 20px auto;"></div>
+                                </div>
+                                
+                                <p style="font-size: 1.2em; color: #666; margin: 30px 0;">This certifies that</p>
+                                
+                                <h2 style="color: #333; font-size: 2.5em; margin: 20px 0; font-family: 'Brush Script MT', cursive;">${studentName}</h2>
+                                
+                                <p style="font-size: 1.2em; color: #666; margin: 30px 0;">has successfully completed</p>
+                                
+                                <h3 style="color: #00897B; font-size: 2em; margin: 20px 0;">Arduino Fundamentals</h3>
+                                <p style="color: #666; font-size: 1.1em;">Master Physical Computing from Scratch to Advanced Projects</p>
+                                
+                                <div style="margin: 40px 0; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+                                        <div>
+                                            <p style="color: #999; margin: 0;">Overall Score</p>
+                                            <p style="color: #00897B; font-size: 2em; font-weight: bold; margin: 5px 0;">${overallScore}%</p>
+                                        </div>
+                                        <div>
+                                            <p style="color: #999; margin: 0;">Modules Completed</p>
+                                            <p style="color: #667eea; font-size: 2em; font-weight: bold; margin: 5px 0;">${Object.keys(moduleQuizScores).length}/6</p>
+                                        </div>
+                                        <div>
+                                            <p style="color: #999; margin: 0;">Final Exam</p>
+                                            <p style="color: #4CAF50; font-size: 2em; font-weight: bold; margin: 5px 0;">${finalQuizScore}%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <p style="color: #666; margin: 30px 0;">Completion Date: ${completionDate}</p>
+                                
+                                <div style="display: flex; justify-content: space-around; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0;">
+                                    <div style="text-align: center;">
+                                        <div style="border-top: 2px solid #333; padding-top: 10px; margin-top: 40px; width: 200px;">
+                                            <p style="margin: 0; font-weight: bold;">Instructor</p>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="border-top: 2px solid #333; padding-top: 10px; margin-top: 40px; width: 200px;">
+                                            <p style="margin: 0; font-weight: bold;">Certificate ID</p>
+                                            <p style="margin: 5px 0; color: #666; font-size: 0.9em;">#ARD-${Date.now().toString(36).toUpperCase()}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: 40px;">
+                                    <button onclick="downloadCertificate()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 40px; border-radius: 8px; cursor: pointer; font-size: 1.1em; margin-right: 10px;">📥 Download Certificate</button>
+                                    <button onclick="this.parentElement.parentElement.parentElement.parentElement.parentElement.remove()" style="background: #666; color: white; border: none; padding: 15px 40px; border-radius: 8px; cursor: pointer; font-size: 1.1em;">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function downloadCertificate() {
+            // Simple download trigger - in a real app, you'd use html2canvas or similar
+            alert('Certificate download functionality!\n\nIn a production environment, this would generate a PDF or high-quality image of your certificate.\n\nFor now, you can take a screenshot of this certificate! 📸');
+        }
+        
+        function updateProgress() {
+            // Update quiz buttons to show completion
+            document.querySelectorAll('.quiz-btn').forEach(btn => {
+                const moduleNum = btn.getAttribute('data-module');
+                if (moduleQuizScores[`module${moduleNum}`]) {
+                    const score = moduleQuizScores[`module${moduleNum}`];
+                    btn.innerHTML = `✅ Retake Quiz (Previous: ${score}%)`;
+                    btn.style.background = score >= 70 ? '#4CAF50' : '#FF9800';
+                }
+            });
+            
+            // Update final quiz button
+            const finalBtn = document.getElementById('final-quiz-btn');
+            if (finalBtn && finalQuizScore) {
+                finalBtn.innerHTML = `✅ Retake Final Quiz (Previous: ${finalQuizScore}%)`;
+                finalBtn.style.background = finalQuizScore >= 75 ? '#4CAF50' : '#FF9800';
+            }
+        }
+        
+        function getQuizData(moduleNumber) {
+            const quizzes = {
+                1: [
+                    {
+                        question: "What does LED stand for?",
+                        options: ["Light Emitting Diode", "Low Energy Device", "Linear Electronic Display", "Light Energy Distributor"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which pin is used to control the onboard LED on Arduino Uno?",
+                        options: ["Pin 11", "Pin 12", "Pin 13", "Pin 14"],
+                        correct: 2
+                    },
+                    {
+                        question: "What is the purpose of a resistor in an LED circuit?",
+                        options: ["Increase brightness", "Limit current to prevent damage", "Store energy", "Amplify voltage"],
+                        correct: 1
+                    },
+                    {
+                        question: "What function is used to make an LED blink?",
+                        options: ["blink()", "delay()", "flash()", "wait()"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which voltage does Arduino Uno operate at?",
+                        options: ["3.3V", "5V", "9V", "12V"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does digitalWrite(13, HIGH) do?",
+                        options: ["Reads pin 13", "Turns pin 13 on", "Sets pin 13 to input", "Resets pin 13"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is Ohm's Law?",
+                        options: ["V = I × R", "V = I / R", "V = I + R", "V = R / I"],
+                        correct: 0
+                    },
+                    {
+                        question: "What does 'SOS' mean in Morse code pattern?",
+                        options: ["... --- ...", "--- ... ---", "... ... ---", "--- --- ..."],
+                        correct: 0
+                    },
+                    {
+                        question: "Which function must every Arduino sketch have?",
+                        options: ["start() and stop()", "begin() and end()", "setup() and loop()", "init() and main()"],
+                        correct: 2
+                    },
+                    {
+                        question: "What is a breadboard used for?",
+                        options: ["Permanent circuits", "Prototyping without soldering", "Power supply", "Measuring voltage"],
+                        correct: 1
+                    }
+                ],
+                2: [
+                    {
+                        question: "What function reads digital input from a pin?",
+                        options: ["readPin()", "digitalRead()", "getPin()", "inputRead()"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is PWM used for?",
+                        options: ["Digital communication", "Analog-like output", "Power management", "Memory storage"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does a pull-up resistor do?",
+                        options: ["Increases voltage", "Ensures defined HIGH state when button not pressed", "Limits current", "Stores charge"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the range of analogRead() values?",
+                        options: ["0-100", "0-255", "0-1023", "0-5000"],
+                        correct: 2
+                    },
+                    {
+                        question: "What is debouncing?",
+                        options: ["Increasing button sensitivity", "Removing electrical noise from switch signals", "Amplifying signals", "Reading multiple buttons"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which pins support PWM on Arduino Uno?",
+                        options: ["All digital pins", "Only analog pins", "Pins marked with ~", "Only pin 13"],
+                        correct: 2
+                    },
+                    {
+                        question: "What baud rate is commonly used for Serial communication?",
+                        options: ["1200", "9600", "19200", "115200"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does the map() function do?",
+                        options: ["Creates arrays", "Converts values from one range to another", "Reads sensor data", "Controls servo motors"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is a photoresistor (LDR)?",
+                        options: ["Temperature sensor", "Light-dependent resistor", "Distance sensor", "Pressure sensor"],
+                        correct: 1
+                    },
+                    {
+                        question: "What type of signal does a potentiometer provide?",
+                        options: ["Digital", "Analog", "PWM", "Binary"],
+                        correct: 1
+                    }
+                ],
+                3: [
+                    {
+                        question: "What does DHT stand for in DHT11 sensor?",
+                        options: ["Digital Heat Thermometer", "Digital Humidity and Temperature", "Direct Heat Transfer", "Dynamic High Temperature"],
+                        correct: 1
+                    },
+                    {
+                        question: "How does an ultrasonic sensor measure distance?",
+                        options: ["Using light", "Using sound waves", "Using magnetism", "Using temperature"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does PIR stand for?",
+                        options: ["Proximity Infrared", "Passive Infrared", "Powered Infrared Reader", "Programmable IR"],
+                        correct: 1
+                    },
+                    {
+                        question: "Why do we use data smoothing?",
+                        options: ["To increase speed", "To reduce noise and fluctuations", "To save memory", "To improve power efficiency"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is sensor calibration?",
+                        options: ["Installing the sensor", "Adjusting sensor readings to known standards", "Cleaning the sensor", "Powering the sensor"],
+                        correct: 1
+                    },
+                    {
+                        question: "What data structure is best for storing multiple sensor readings?",
+                        options: ["Variable", "Array", "String", "Boolean"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the typical range of an HC-SR04 ultrasonic sensor?",
+                        options: ["2cm - 50cm", "2cm - 400cm", "1m - 10m", "10cm - 100cm"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does a moving average filter do?",
+                        options: ["Speeds up readings", "Smooths data by averaging recent values", "Amplifies signals", "Converts digital to analog"],
+                        correct: 1
+                    },
+                    {
+                        question: "What triggers a PIR motion sensor?",
+                        options: ["Temperature changes", "Infrared radiation changes", "Sound", "Light changes"],
+                        correct: 1
+                    },
+                    {
+                        question: "How often should temperature sensors typically be read?",
+                        options: ["Every millisecond", "Every few seconds", "Once per hour", "Continuously"],
+                        correct: 1
+                    }
+                ],
+                4: [
+                    {
+                        question: "What does LCD stand for?",
+                        options: ["Light Control Display", "Liquid Crystal Display", "Low Current Device", "Linear Character Display"],
+                        correct: 1
+                    },
+                    {
+                        question: "How many characters can a 16x2 LCD display?",
+                        options: ["16", "32", "64", "128"],
+                        correct: 1
+                    },
+                    {
+                        question: "What library is commonly used for LCD displays?",
+                        options: ["LCD.h", "Display.h", "LiquidCrystal.h", "Screen.h"],
+                        correct: 2
+                    },
+                    {
+                        question: "How many colors can an RGB LED display?",
+                        options: ["3", "256", "Thousands", "Millions"],
+                        correct: 3
+                    },
+                    {
+                        question: "What is multiplexing in 7-segment displays?",
+                        options: ["Using multiple displays", "Rapidly switching between digits", "Increasing brightness", "Combining colors"],
+                        correct: 1
+                    },
+                    {
+                        question: "What are the three color channels in an RGB LED?",
+                        options: ["Red, Green, Blue", "Red, Yellow, Blue", "Red, Green, Black", "Red, Gray, Blue"],
+                        correct: 0
+                    },
+                    {
+                        question: "What is a custom character in LCD?",
+                        options: ["Bold text", "User-defined pixel pattern", "Colored text", "Animated text"],
+                        correct: 1
+                    },
+                    {
+                        question: "What function clears an LCD display?",
+                        options: ["lcd.erase()", "lcd.clear()", "lcd.delete()", "lcd.reset()"],
+                        correct: 1
+                    },
+                    {
+                        question: "How do you create white color with RGB LED?",
+                        options: ["Red only", "All colors at maximum", "Red and Blue", "Green and Blue"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the common anode vs common cathode in RGB LEDs?",
+                        options: ["Different brightness levels", "Different connection configurations", "Different color ranges", "Different sizes"],
+                        correct: 1
+                    }
+                ],
+                5: [
+                    {
+                        question: "What is the difference between DC and servo motors?",
+                        options: ["Voltage rating", "Servo motors provide position control", "DC motors are faster", "Servo motors are cheaper"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does an H-bridge do?",
+                        options: ["Increases voltage", "Controls motor direction", "Measures speed", "Reduces noise"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the typical angle range of a servo motor?",
+                        options: ["0-90 degrees", "0-180 degrees", "0-360 degrees", "Unlimited"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is PWM used for in DC motor control?",
+                        options: ["Direction control", "Speed control", "Position control", "Color control"],
+                        correct: 1
+                    },
+                    {
+                        question: "How do stepper motors differ from DC motors?",
+                        options: ["They're faster", "They move in precise steps", "They use less power", "They're quieter"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the L298N?",
+                        options: ["A sensor", "A motor driver", "A display", "A microcontroller"],
+                        correct: 1
+                    },
+                    {
+                        question: "Why do motors need separate power supplies?",
+                        options: ["They're more expensive", "They draw more current than Arduino can provide", "They need higher voltage", "They generate noise"],
+                        correct: 1
+                    },
+                    {
+                        question: "What library is used for servo motor control?",
+                        options: ["Motor.h", "Servo.h", "Movement.h", "Position.h"],
+                        correct: 1
+                    },
+                    {
+                        question: "What causes motor 'cogging'?",
+                        options: ["Too much power", "Magnetic detents in stepper motors", "Loose connections", "Low voltage"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the purpose of a flyback diode with motors?",
+                        options: ["Increase speed", "Protect against voltage spikes", "Measure current", "Control direction"],
+                        correct: 1
+                    }
+                ],
+                6: [
+                    {
+                        question: "What does I2C stand for?",
+                        options: ["Internal Integrated Circuit", "Inter-Integrated Circuit", "Input-Integrated Controller", "Intelligent IC"],
+                        correct: 1
+                    },
+                    {
+                        question: "How many wires does I2C communication require?",
+                        options: ["1", "2", "4", "8"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the typical baud rate for HC-05 Bluetooth?",
+                        options: ["1200", "9600", "115200", "256000"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does SPI stand for?",
+                        options: ["Serial Peripheral Interface", "Simple Programming Interface", "Sensor Protocol Integration", "Standard Pin Interface"],
+                        correct: 0
+                    },
+                    {
+                        question: "What file system is commonly used on SD cards with Arduino?",
+                        options: ["NTFS", "FAT16/FAT32", "EXT4", "HFS+"],
+                        correct: 1
+                    },
+                    {
+                        question: "What are the two I2C wires called?",
+                        options: ["TX and RX", "SDA and SCL", "MOSI and MISO", "VCC and GND"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is an I2C address?",
+                        options: ["IP address", "Unique identifier for I2C devices", "Memory location", "Pin number"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the purpose of pull-up resistors in I2C?",
+                        options: ["Increase speed", "Ensure proper voltage levels", "Reduce noise", "Save power"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does the ESP8266 module provide?",
+                        options: ["Bluetooth", "WiFi connectivity", "SD card storage", "Display output"],
+                        correct: 1
+                    },
+                    {
+                        question: "Why would you use SPI instead of I2C?",
+                        options: ["Lower cost", "Faster data transfer", "Simpler wiring", "Less power consumption"],
+                        correct: 1
+                    }
+                ]
+            };
+            
+            return quizzes[moduleNumber] || [];
+        }
+        
+        function getFinalQuizData() {
+            return [
+                {
+                    question: "In a circuit with a 220Ω resistor and a 5V supply, what is the current?",
+                    options: ["~23mA", "~50mA", "~100mA", "~200mA"],
+                    correct: 0
+                },
+                {
+                    question: "Which communication protocol requires the most wires?",
+                    options: ["I2C", "SPI", "UART", "Bluetooth"],
+                    correct: 1
+                },
+                {
+                    question: "What happens if you connect a 5V sensor to a 3.3V Arduino without level shifting?",
+                    options: ["Nothing", "Sensor won't work", "May damage Arduino", "Works perfectly"],
+                    correct: 2
+                },
+                {
+                    question: "How do you prevent button bounce in software?",
+                    options: ["Use stronger buttons", "Add delay and check stability", "Increase voltage", "Use pull-down resistors"],
+                    correct: 1
+                },
+                {
+                    question: "What is the maximum current an Arduino Uno pin can safely provide?",
+                    options: ["5mA", "20mA", "40mA", "100mA"],
+                    correct: 2
+                },
+                {
+                    question: "Which sensor would you use to detect if someone entered a room?",
+                    options: ["Temperature sensor", "PIR sensor", "LDR", "Potentiometer"],
+                    correct: 1
+                },
+                {
+                    question: "What is the purpose of the analogReference() function?",
+                    options: ["Set PWM frequency", "Set ADC reference voltage", "Calibrate sensors", "Set serial baud rate"],
+                    correct: 1
+                },
+                {
+                    question: "How would you control 10 LEDs with only 3 Arduino pins?",
+                    options: ["Impossible", "Use shift registers or multiplexing", "Use higher voltage", "Use PWM"],
+                    correct: 1
+                },
+                {
+                    question: "What is interrupt in Arduino programming?",
+                    options: ["Stopping the program", "Immediate response to external events", "Error handling", "Debugging tool"],
+                    correct: 1
+                },
+                {
+                    question: "Why use millis() instead of delay() for timing?",
+                    options: ["More accurate", "Non-blocking - allows multitasking", "Uses less memory", "Runs faster"],
+                    correct: 1
+                },
+                {
+                    question: "What is the purpose of Wire.begin() in I2C?",
+                    options: ["Start serial communication", "Initialize I2C communication", "Begin WiFi", "Start SPI"],
+                    correct: 1
+                },
+                {
+                    question: "How do you protect Arduino from motor back EMF?",
+                    options: ["Use higher voltage", "Add flyback diodes", "Use resistors", "Reduce motor speed"],
+                    correct: 1
+                },
+                {
+                    question: "What does EEPROM stand for?",
+                    options: ["Electronic Erasable Programmable Read-Only Memory", "Electrically Erasable Programmable Read-Only Memory", "Extended Electronic Program Memory", "Erasable Electronic Permanent Memory"],
+                    correct: 1
+                },
+                {
+                    question: "Which would consume less power - sleep mode or regular operation?",
+                    options: ["Same power", "Regular operation", "Sleep mode", "Depends on code"],
+                    correct: 2
+                },
+                {
+                    question: "What is the watchdog timer used for?",
+                    options: ["Measuring time", "Resetting frozen programs", "Controlling motors", "Reading sensors"],
+                    correct: 1
+                },
+                {
+                    question: "How many I2C devices can theoretically share the same bus?",
+                    options: ["2", "8", "128", "256"],
+                    correct: 2
+                },
+                {
+                    question: "What is the difference between SRAM and Flash memory in Arduino?",
+                    options: ["No difference", "SRAM is for variables, Flash for program code", "SRAM is faster only", "Flash is temporary"],
+                    correct: 1
+                },
+                {
+                    question: "Why use external interrupts?",
+                    options: ["Faster processing", "Immediate response without polling", "Save memory", "Better debugging"],
+                    correct: 1
+                },
+                {
+                    question: "What is the typical impedance of an LCD display?",
+                    options: ["High impedance", "Low impedance", "Zero impedance", "Negative impedance"],
+                    correct: 0
+                },
+                {
+                    question: "In a complete Arduino project, what should you consider last?",
+                    options: ["Code", "Power supply", "Enclosure and user experience", "Sensor selection"],
+                    correct: 2
+                }
+            ];
+        }
+        
+        // Keep first module open by default and update progress
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.module').classList.add('active');
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
